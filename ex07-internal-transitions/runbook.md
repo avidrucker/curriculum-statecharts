@@ -89,22 +89,24 @@ Replace `;; YOUR CODE HERE`:
 
 Save.
 
-Expected — **4 of 11 pass**:
+Expected — **5 of 11 pass**:
 
 ```
-1 tests, 11 assertions, 7 failures.
+1 tests, 11 assertions, 6 failures.
 ```
 
 What now passes:
 
 - Block 1's `(t/in? env :viewing)` — `:editor` is the first top-level state; `:viewing` is its first child by document order.
+- Block 3's `(t/in? env :viewing)` — the chart never *left* `:viewing` (no transitions exist), so it's still there after the test fires `:edit` and `:preview` (both silently dropped).
 - All three `(= 0 @save-count)` assertions — nothing has fired any script.
 
 What still fails:
 
 - Block 1's `(= 1 @load-count)` — no on-entry exists yet, so load-count is still 0.
-- Every "switch to X" assertion (no transitions).
-- The `:done → :closed` assertions.
+- Block 2's `(t/in? env :editing)` — no `:edit` transition; chart stays in `:viewing`.
+- Block 2's and block 3's `(= 1 @load-count)` — still 0.
+- Block 4's `(t/in? env :closed)` and `(= 1 @save-count)` — no `:done` transition.
 
 ### 4.2 — Add on-entry / on-exit + the first internal transition
 
@@ -119,21 +121,22 @@ What still fails:
 
 Save.
 
-Expected — **6 of 11 pass**:
+Expected — **8 of 11 pass**:
 
 ```
-1 tests, 11 assertions, 5 failures.
+1 tests, 11 assertions, 3 failures.
 ```
 
-What's new:
+What's new (compared to 4.1):
 
-- Block 1's `(= 1 @load-count)` — `:editor`'s on-entry fired on start, incrementing the counter.
-- Block 2's `(t/in? env :editing)` — `:edit` matched the new internal transition; chart switched to `:editing`.
-- Block 2's `(= 1 @load-count)` — internal transition didn't re-fire on-entry; counter still 1.
+- Block 1's `(= 1 @load-count)` ✓ — `:editor`'s on-entry fired on start, incrementing the counter.
+- Block 2's `(t/in? env :editing)` ✓ — `:edit` matched the new internal transition; chart switched to `:editing`.
+- Block 2's and block 3's `(= 1 @load-count)` ✓ — internal transition didn't re-fire on-entry; counter still 1.
 
-Block 2's `(= 0 @save-count)` was already passing (block 1's was true; the new state of save-count is also 0).
+What still fails:
 
-Still failing: block 3 (no `:preview`), block 4 (no `:done`), and downstream counter assertions.
+- Block 3's `(t/in? env :viewing)` ✗ — `:preview` has no transition yet, chart stays in `:editing`, not `:viewing`. (Note this *passed* in step 4.1 because the chart was still in `:viewing` from never having moved; now it has moved, so a stale "passes by accident" assertion fails.)
+- Block 4's `(t/in? env :closed)` and `(= 1 @save-count)` — no `:done` transition.
 
 ### 4.3 — Add the `:preview` internal transition
 
