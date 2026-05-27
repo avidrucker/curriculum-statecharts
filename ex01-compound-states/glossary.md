@@ -43,7 +43,7 @@ The function from `com.fulcrologic.statecharts.elements` that declares a transit
 
 Two keys appear in ex01:
 
-- **`:event`** — the keyword event name to listen for. (ex02 covers patterns and wildcards.)
+- **`:event`** — the keyword event name to listen for. (ex02 covers patterns and wildcards. The key also accepts a *vector* of keywords for "fire on any of these" semantics, covered in ex02's gotcha #6 — for ex01, single keyword is all you need.)
 - **`:target`** — the `:id` of the state to enter when the transition fires.
 
 The transition is always declared *inside* the source [[state]] element. The "from" is implicit (the enclosing state); the "to" is named via `:target`.
@@ -120,7 +120,7 @@ For ex01 with three peer atomic states, the configuration after `(t/start! env)`
 
 Two confusing-on-first-encounter results worth knowing in ex01:
 
-- **`(t/in? env :ROOT) → false`** — the chart root is the container, not a state in the configuration. This stays true in every exercise.
+- **`(t/in? env :ROOT) → false`** — the chart root is the container, not a state in the configuration. This holds for charts driven via the normal `start!` + `run-events!` lifecycle. **One exception worth knowing about now: starting from ex03, the test-only `t/goto-configuration!` helper builds its configuration via a different code path that *does* include `:ROOT`.** See [ex03 gotchas #1](../ex03-guards/gotchas.md) for the asymmetry.
 - **`(t/in? env :traffic-light) → false`** — no state in the chart has that ID. The exercise never declared one; the chart root is auto-named `:ROOT`, not `:traffic-light`.
 
 `t/in?`'s set-membership behavior becomes more useful in ex04 (parallel) and ex06 (history), where the configuration set contains multiple state IDs at once.

@@ -153,7 +153,9 @@ For the traffic light, here's what the configuration set actually contains at ea
 | After another `:next` | `#{:yellow}` |
 | After another `:next` | `#{:red}` (cycle complete) |
 
-Worth knowing: the auto-generated `:ROOT` is *not* in the configuration set. `(t/in? env :ROOT)` returns `false` even when the chart is running. The set contains active *atomic* states (and, in nested charts, active compound-state ancestors below `:ROOT`); the chart root itself is excluded.
+Worth knowing: the auto-generated `:ROOT` is *not* in the configuration set when the chart is driven via the normal `start!` + `run-events!` lifecycle. `(t/in? env :ROOT)` returns `false` even when the chart is running. The set contains active *atomic* states (and, in nested charts, active compound-state ancestors below `:ROOT`); the chart root itself is excluded.
+
+*(One asymmetry surfaces in ex03: the test-only `t/goto-configuration!` helper computes its target configuration via a slightly different code path that **does** include `:ROOT`. For ex01 you'll only use `start!` + `run-events!` — the `:ROOT`-excluded rule holds throughout. See [ex03 gotchas #1](../ex03-guards/gotchas.md) when you get there.)*
 
 > **Common misconception** — "The configuration is a single state."
 >

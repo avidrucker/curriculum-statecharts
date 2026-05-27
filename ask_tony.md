@@ -8,6 +8,17 @@ This file is append-only during authoring; resolved questions get folded back in
 
 ---
 
+## Status of open questions
+
+After empirical probes across ex01–ex09, the questions divide into two categories:
+
+- **Behavior verified, intent unclear.** Empirical probes have established what the library *does*. What remains is whether the author *intends* the behavior, whether it's stable across versions, or whether it's a known bug. The curriculum currently documents the behavior with appropriate caveats; the author's intent would let us sharpen the framing. Questions in this category: **Q1, Q6, Q7, Q8, Q10**.
+- **Empirically open OR mostly-empirical.** Questions where more empirical work (or the author's clarification) is needed to fully establish behavior. Questions in this category: **Q2, Q3, Q4, Q5, Q9**.
+
+Both categories share the same template; only the path-to-resolution differs.
+
+---
+
 ## Open
 
 ### Q1: Is the string-prefix fallback in `name-match?` intentional or a bug?

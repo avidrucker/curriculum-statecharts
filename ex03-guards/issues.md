@@ -71,23 +71,6 @@ The result also feeds [`ask_tony.md` Q9](../ask_tony.md), which asks the *curric
 
 ---
 
-### Issue 3: Does `goto-configuration!` preserve history values?
-
-**Discovered while.** Writing the ex03 glossary entry for `t/goto-configuration!`. The library docstring includes: "Previously recorded state history (via history nodes) is UNAFFECTED."
-
-**What we don't know.** Empirically, with a chart that has history nodes (ex06 territory), if we:
-
-1. Start the chart.
-2. Drive it through states that update history.
-3. Call `goto-configuration!` to jump elsewhere.
-4. Drive back via a history transition — does the original history value survive?
-
-The docstring claim is plausible but unverified.
-
-**How to investigate.** Defer this to ex06 (history). When authoring that module, construct a chart that records history, jump with `goto-configuration!`, verify history is restored. If the docstring is wrong, file a curriculum note and `ask_tony.md` entry.
-
-**Impact on the docs.** Currently ex03 glossary just quotes the docstring. Low impact in ex03; matters in ex06 if it turns out wrong.
-
 ---
 
 ## Resolved
@@ -106,3 +89,12 @@ The docstring claim is plausible but unverified.
 When the chart is in `:inner` and `:go` arrives: `:inner`'s transition is skipped (guard false), the walk continues to `:outer`, `:outer`'s transition fires, the chart enters `:elsewhere`. Hypothesis A confirmed.
 
 A brief sentence has been added to the ex03 tutorial Step 2 noting this. No further action needed.
+
+### Issue 3: Does `goto-configuration!` preserve history values?
+
+**Resolved: 2026-05-27 (curriculum review pass) — yes, preserved.** Probe constructed a chart with deep history, established a recorded value (`{:h #{:b}}`), called `(t/goto-configuration! env [] #{:main})` to jump elsewhere, then verified:
+
+1. The `::sc/history-value` in working memory was unchanged across the `goto-configuration!` call.
+2. Re-entering via the history node (`:open :target :h`) correctly restored `:b` (not the default `:a`).
+
+The library docstring claim ("Previously recorded state history is UNAFFECTED") holds empirically. No further action; the ex03 glossary's quote of the docstring is accurate.

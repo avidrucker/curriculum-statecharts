@@ -36,6 +36,8 @@ Each entry verified empirically against `com.fulcrologic/statecharts` 1.2.25.
 
 **Defense.** Don't ever check `(t/in? env :ROOT)` expecting it to mean "is the chart running?" Use `(seq (-> env :env (get :com.fulcrologic.statecharts/working-memory-store) :storage deref :test (get :com.fulcrologic.statecharts/configuration)))` for that, or just check for a known atomic state. The ex01 [tutorial Step 5](./tutorial.md) table is the canonical answer for what's in the set at each lifecycle moment.
 
+**Important caveat (introduced in ex03):** the rule above is for charts driven via `start!` + `run-events!`. The test-only helper `t/goto-configuration!` (used starting in ex03) builds its target configuration via a different algorithm that *does* include `:ROOT`. So `(t/in? env :ROOT)` can return `true` after a `goto-configuration!` call. See [ex03 gotchas #1](../ex03-guards/gotchas.md) for the asymmetry.
+
 ---
 
 ### 4. `(t/in? env :anything)` returns `false` silently — typos don't error
