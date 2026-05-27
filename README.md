@@ -49,9 +49,9 @@ ex09-invocations/
 | ex06-history | ✅ | ✅ | ✅ | ✅ | ✅ |
 | ex07-internal-transitions | ✅ | ✅ | ✅ | ✅ | ✅ |
 | ex08-final-and-done | ✅ | ✅ | ✅ | ✅ | ✅ |
-| ex09-invocations | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
+| ex09-invocations | ✅ | ✅ | ✅ | ✅ | ✅ |
 
-Top-level scaffolding (`overview.md`, `setup.md`, `glossary.md`, `CLAUDE.md`) is in place. Per-exercise modules are pending.
+Top-level scaffolding (`overview.md`, `setup.md`, `glossary.md`, `CLAUDE.md`) is in place. **All 11 per-exercise modules are complete** with their full 5-doc set (tutorial, runbook, quiz, glossary, gotchas).
 
 ## Upstream
 
