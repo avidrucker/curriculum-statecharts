@@ -47,7 +47,7 @@ ex09-invocations/
 | ex04-parallel | ✅ | ✅ | ✅ | ✅ | ✅ |
 | ex05-multi-target | ✅ | ✅ | ✅ | ✅ | ✅ |
 | ex06-history | ✅ | ✅ | ✅ | ✅ | ✅ |
-| ex07-internal-transitions | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
+| ex07-internal-transitions | ✅ | ✅ | ✅ | ✅ | ✅ |
 | ex08-final-and-done | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
 | ex09-invocations | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
 
