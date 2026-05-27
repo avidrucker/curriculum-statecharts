@@ -48,7 +48,7 @@ Later you add a second invocation with `:id :payment` (also a parent state somew
 
 ---
 
-### 3. Forgetting to register the child chart — invoke silently fails
+### 3. Forgetting to register the child chart — invoke fails with `:error.platform`
 
 **What you'll see.** You write:
 
@@ -59,21 +59,44 @@ Later you add a second invocation with `:id :payment` (also a parent state somew
 ;; ... drive parent to invoking state
 ```
 
-The parent enters the invoking state. No child session is created. `(get-working-memory wmstore env :payment-process)` returns nil. The chart appears to ignore the `invoke` element silently.
+The parent enters the invoking state. No child session is created (`(get-working-memory wmstore env :payment-process)` returns `nil`). The chart appears to "do nothing." But: if you drain the event queue, you'll find an `:error.platform` event waiting, targeted at the parent's session.
 
-**What's really happening.** `invoke`'s `:src` is a registry key. When the invocation processor looks it up, the registry returns nothing. The library may queue a `error.execution.<invokeid>` event or just silently fail to start the child (the exact behavior depends on the library version; in 1.2.25 the failure is largely silent).
+**What's really happening.** `invoke`'s `:src` is a registry key. When the invocation processor looks it up and finds nothing, it queues an `:error.platform` event of type `:com.fulcrologic.statecharts/chart` addressed to the parent. The event sits in the queue until someone calls `sp/receive-events!` and processes it.
 
-**Defense.** Always register both parent and child before `sp/start!`. A common pattern:
+**Empirically verified:** with `:checkout-chart` registered but `:payment-chart` not registered, after firing `:pay`:
 
-```clojure
-(let [env (simple/simple-env)]
-  (simple/register! env :parent parent-chart)
-  (simple/register! env :child-A child-A)
-  (simple/register! env :child-B child-B)
-  ...)
+```
+parent config: (:checkout :processing-payment)
+child session exists? false
+events in queue: :error.platform → :checkout-session
 ```
 
-When debugging "child never starts," check both that the chart is registered AND that the `:src` keyword matches the registration key.
+The parent didn't move forward (no `done.invoke` will ever fire — there's no child). But the error event is *observable*.
+
+**Defense.** Two practices:
+
+1. **Always register both parent and child before `sp/start!`:**
+
+   ```clojure
+   (let [env (simple/simple-env)]
+     (simple/register! env :parent parent-chart)
+     (simple/register! env :child-A child-A)
+     (simple/register! env :child-B child-B)
+     ...)
+   ```
+
+2. **Add an error-handling transition for `:error.platform`** on states with invocations:
+
+   ```clojure
+   (state {:id :processing-payment}
+     (invoke {:id :payment-process :type :statechart :src :payment-chart})
+     (transition {:event :done.invoke.payment-process :target :confirmation})
+     (transition {:event :error.platform :target :error-state}))   ; ← catch startup failures
+   ```
+
+   This catches the "child failed to start" case and routes the chart to error recovery instead of leaving it stuck.
+
+When debugging "child never starts," (a) check that the chart is registered AND `:src` matches the registration key, then (b) drain the event queue and look for `:error.platform`.
 
 ---
 
@@ -179,8 +202,9 @@ The exercise doesn't use `:autoforward`. The parent fires `:pay`; only the paren
 
 ---
 
-> **Verified empirically (probes run during ex09 authoring):**
+> **Verified empirically (probes run during ex09 authoring + review pass):**
 >
 > - [^p2]: Working-memory-store has parent and child as sibling entries, not nested
 > - [^p3]: `t/new-testing-env` doesn't start child charts (MockInvocations stubs them)
 > - [^p5]: Parent exiting invoking state auto-terminates child session (working memory removed)
+> - [^pR3]: Review-pass empirical: with `:src` pointing at an unregistered chart, the invocation processor queues `:error.platform` (type `:com.fulcrologic.statecharts/chart`) targeted at the parent's session. The parent is stuck unless it has a transition catching `:error.platform`.
