@@ -48,7 +48,7 @@ ex09-invocations/
 | ex05-multi-target | ✅ | ✅ | ✅ | ✅ | ✅ |
 | ex06-history | ✅ | ✅ | ✅ | ✅ | ✅ |
 | ex07-internal-transitions | ✅ | ✅ | ✅ | ✅ | ✅ |
-| ex08-final-and-done | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
+| ex08-final-and-done | ✅ | ✅ | ✅ | ✅ | ✅ |
 | ex09-invocations | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
 
 Top-level scaffolding (`overview.md`, `setup.md`, `glossary.md`, `CLAUDE.md`) is in place. Per-exercise modules are pending.
