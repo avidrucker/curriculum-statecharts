@@ -1,0 +1,19 @@
+# Per-machine Claude Code permission allowlist — don't commit
+.claude/settings.local.json
+
+# Common editor / OS detritus
+*~
+*.swp
+*.swo
+.DS_Store
+.idea/
+.vscode/
+.nrepl-port
+
+# Local probe scratch (none currently, but the inspect-*.clj pattern from authoring)
+inspect-*.clj
+/tmp/
+
+# Clojure build cache (none in this repo, but defensive)
+.cpcache/
+target/
