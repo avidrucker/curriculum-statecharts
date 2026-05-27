@@ -141,6 +141,31 @@ This question subsumes Q3 (which asked "why is `:ROOT` excluded from the normal-
 
 ---
 
+### Q10: Cross-region transitions — is "source state stays in the configuration" the intended SCXML behavior or a library quirk?
+
+**Where this came up.** ex04 gotchas #6, ex04 glossary `cross-region transition`, ex04 runbook "Try breaking it" #2.
+
+**What I verified empirically.** A transition from `:ra-1` (in region `:ra` of parallel `:par`) targeting `:rb-2` (in region `:rb`) produces this configuration shift:
+
+```
+before :cross  →  #{:par :ra :ra-1 :rb :rb-1}
+after  :cross  →  #{:par :ra :ra-1 :rb :rb-2}
+```
+
+The source state `:ra-1` remains in the configuration. The target `:rb-2` becomes active in `:rb`. In-region transitions exit their source state cleanly; cross-region transitions don't.
+
+**What I can't tell from the code.** Two possibilities:
+
+(a) **Intended**: SCXML's LCA-based exit-set computation says the LCA of a cross-region transition is the parallel, so the exit set doesn't include the source's region — leaving the source state active is *structurally correct*. The library follows the spec.
+
+(b) **Quirk**: the library's interpretation produces a configuration that's *technically valid* per the LCA rule but operationally surprising. The "correct" behavior arguably would be to re-initialize the source's region (or treat cross-region transitions as a chart-level error).
+
+Either way, the curriculum currently warns against the pattern. But if (a) is the case, we'd frame it as "advanced SCXML, here's when you'd actually use it"; if (b), we'd frame more strongly as "the library will let you write this but the behavior is undefined-in-practice."
+
+**Provisional answer in the docs.** Documented as "don't write cross-region transitions" with the empirical configuration outcome shown. Framing is non-committal about whether it's a feature or a quirk.
+
+---
+
 ### Q6: Is `(def scxml statechart)` an actively-supported alias, or a legacy holdover?
 
 **Where this came up.** Top-level glossary `statechart` (mentions the alias).

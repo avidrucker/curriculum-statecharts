@@ -44,7 +44,7 @@ ex09-invocations/
 | ex03-guards | ✅ | ✅ | ✅ | ✅ | ✅ |
 | ex03b-data-operations | ✅ | ✅ | ✅ | ✅ | ✅ |
 | ex03c-convenience | ✅ | ✅ | ✅ | ✅ | ✅ |
-| ex04-parallel | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
+| ex04-parallel | ✅ | ✅ | ✅ | ✅ | ✅ |
 | ex05-multi-target | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
 | ex06-history | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
 | ex07-internal-transitions | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
