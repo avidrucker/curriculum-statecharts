@@ -43,7 +43,7 @@ ex09-invocations/
 | ex02-event-matching | ✅ | ✅ | ✅ | ✅ | ✅ |
 | ex03-guards | ✅ | ✅ | ✅ | ✅ | ✅ |
 | ex03b-data-operations | ✅ | ✅ | ✅ | ✅ | ✅ |
-| ex03c-convenience | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
+| ex03c-convenience | ✅ | ✅ | ✅ | ✅ | ✅ |
 | ex04-parallel | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
 | ex05-multi-target | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
 | ex06-history | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
