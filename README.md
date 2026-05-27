@@ -45,7 +45,7 @@ ex09-invocations/
 | ex03b-data-operations | ✅ | ✅ | ✅ | ✅ | ✅ |
 | ex03c-convenience | ✅ | ✅ | ✅ | ✅ | ✅ |
 | ex04-parallel | ✅ | ✅ | ✅ | ✅ | ✅ |
-| ex05-multi-target | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
+| ex05-multi-target | ✅ | ✅ | ✅ | ✅ | ✅ |
 | ex06-history | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
 | ex07-internal-transitions | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
 | ex08-final-and-done | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
